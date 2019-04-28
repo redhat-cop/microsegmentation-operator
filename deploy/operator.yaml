@@ -16,7 +16,7 @@ spec:
       containers:
         - name: microsegmentation-operator
           # Replace this with the built image name
-          image: REPLACE_IMAGE
+          image: quay.io/redhat-cop/microsegmentation-operator:latest
           command:
           - microsegmentation-operator
           imagePullPolicy: Always

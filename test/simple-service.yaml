@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    microsegmentation-operator.redhat-cop.io/microsegmentation: "true"
+  name: test1
+spec:
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8443
+  - name: https1
+    port: 4431
+    protocol: TCP
+    targetPort: 8431    
+  selector:
+    app: console
+    component: ui
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    microsegmentation-operator.redhat-cop.io/microsegmentation: "true"
+    microsegmentation-operator.redhat-cop.io/additional-inbound-ports: 123/TCP,456/UDP
+    microsegmentation-operator.redhat-cop.io/inbound-pod-labels: app=gateway,application=3scale
+    microsegmentation-operator.redhat-cop.io/inbound-namespace-labels: frontend=abc,frontend-user=customers
+    microsegmentation-operator.redhat-cop.io/outbound-pod-labels: app=database,application=db2
+    microsegmentation-operator.redhat-cop.io/outbound-namespace-labels: backend=cfg,backend-user=internal
+    microsegmentation-operator.redhat-cop.io/outbound-ports: 789/TCP,012/UDP
+  name: test2
+spec:
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8443
+  - name: https1
+    port: 4431
+    protocol: TCP
+    targetPort: 8431    
+  selector:
+    app: console
+    component: ui      

@@ -6,8 +6,20 @@ subjects:
 - kind: ServiceAccount
   name: microsegmentation-operator
   # Replace this with the namespace the operator is deployed in.
-  namespace: REPLACE_NAMESPACE
+  namespace: microsegmentation-operator
 roleRef:
   kind: ClusterRole
   name: microsegmentation-operator
   apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: microsegmentation-operator
+subjects:
+- kind: ServiceAccount
+  name: microsegmentation-operator
+roleRef:
+  kind: Role
+  name: microsegmentation-operator
+  apiGroup: rbac.authorization.k8s.io  
