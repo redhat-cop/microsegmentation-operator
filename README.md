@@ -20,7 +20,7 @@ Inbound/outbound ports and in AND with corresponding inbound/outbound pod label 
 
 Pod label selectors and namespace label selectors are in OR with each other.
 
-These annotation are here to provide a bit of flexibility but if you find yourself making high use of these annotation, you have probably outpassed the utility of this operator and you should probably create NetworkPolicy direclty.
+These annotations are here to provide a bit of flexibility but if you find yourself making high use of them, you have probably outpassed the utility of this operator and you should probably create NetworkPolicies direclty.
 
 ## Examples
 
@@ -72,7 +72,7 @@ spec:
   - Ingress
 ```
 
-The following service: 
+The following service:
 
 ```yaml
 apiVersion: v1
