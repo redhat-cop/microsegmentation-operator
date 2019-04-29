@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/redhat-cop/microsegmentation-operator.svg?branch=master)](https://travis-ci.org/redhat-cop/microsegmentation-operator) [![Docker Repository on Quay](https://quay.io/repository/redhat-cop/microsegmentation-operator/status "Docker Repository on Quay")](https://quay.io/repository/redhat-cop/microsegmentation-operator)
 
-The microsegmentation operator allows to create [NetworkPolicy]() rules starting from [Services]().
+The microsegmentation operator allows to create [NetworkPolicies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) rules starting from [Services](https://kubernetes.io/docs/concepts/services-networking/service/).
 This feature is activated by this annotation: `microsegmentation-operator.redhat-cop.io/microsegmentation: "true"`
 By default the generated NetworkPolicy will allow traffic from pods in the same namespace and to the ports described in the service.
 The NetworkPolicy object can be tweaked with the following additional annotations:
@@ -16,11 +16,13 @@ The NetworkPolicy object can be tweaked with the following additional annotation
 | `microsegmentation-operator.redhat-cop.io/outbound-namespace-labels`  | comma separated list of labels to be used as label selectors for allowed outbound namespaces; e.g. `label1=value1,label2=value2`  |
 | `microsegmentation-operator.redhat-cop.io/outbound-ports`  | comma separated list of allowed outbound ports expressed in this format: *port/protocol*; e.g. `8888/TCP,9999/UDP`  |
 
-Inbound/outbound ports and in AND with corresponding inbound/outbound pod label selectors and namespace label selectors.
+Inbound/outbound ports and in `AND` with corresponding inbound/outbound pod label selectors and namespace label selectors.
 
-Pod label selectors and namespace label selectors are in OR with each other.
+The pod label selector and the namespace label selector are in OR with each other.
 
-These annotations are here to provide a bit of flexibility but if you find yourself making high use of them, you have probably outpassed the utility of this operator and you should probably create NetworkPolicies direclty.
+It should be relatovely common to use the `additional-inbound-ports` annotation to model those situation where a pod exposes a port that should not be load balanced. 
+
+All the other annotation are there to provide flexibility, but should not be used extensively. If you find yourself making high use of them, you have probably reached the piint where you should create NetworkPolicies direclty.
 
 ## Examples
 
