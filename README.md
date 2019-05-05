@@ -20,9 +20,9 @@ Inbound/outbound ports and in `AND` with corresponding inbound/outbound pod labe
 
 The pod label selector and the namespace label selector are in OR with each other.
 
-It should be relatovely common to use the `additional-inbound-ports` annotation to model those situation where a pod exposes a port that should not be load balanced. 
+It should be relatively common to use the `additional-inbound-ports` annotation to model those situation where a pod exposes a port that should not be load balanced.
 
-All the other annotation are there to provide flexibility, but should not be used extensively. If you find yourself making high use of them, you have probably reached the piint where you should create NetworkPolicies direclty.
+All the other annotation are there to provide flexibility, but should not be used extensively. If you find yourself making high use of them, you have probably reached the point where you should create NetworkPolicies directly.
 
 ## Examples
 
@@ -174,7 +174,7 @@ spec:
 
 ## Deploying the Operator
 
-This is a cluster-level operator that you can deploy in any namespace, `microsegmentation-operator` is recommeded.
+This is a cluster-level operator that you can deploy in any namespace, `microsegmentation-operator` is recommended.
 
 ```shell
 oc new-project microsegmentation-operator
@@ -190,7 +190,7 @@ oc apply -f deploy
 
 Execute the following steps to develop the functionality locally. It is recommended that development be done using a cluster with `cluster-admin` permissions.
 
-Clone the repository, then resolve all depdendencies using `dep`:
+Clone the repository, then resolve all dependencies using `dep`:
 
 ```shell
 dep ensure
