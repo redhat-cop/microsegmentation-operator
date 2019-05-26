@@ -4,7 +4,9 @@ import (
 	"context"
 	"strconv"
 	"strings"
+	"time"
 
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
 	"github.com/redhat-cop/operator-utils/pkg/util"
@@ -32,6 +34,7 @@ const inboundNamespaceLables = annotationBase + "/inbound-namespace-labels"
 const outboundPodLabels = annotationBase + "/outbound-pod-labels"
 const outboundNamespaceLabels = annotationBase + "/outbound-namespace-labels"
 const outboundPorts = annotationBase + "/outbound-ports"
+const controllerName = "service-controller"
 
 // Add creates a new Service Controller and adds it to the Manager. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
@@ -42,14 +45,14 @@ func Add(mgr manager.Manager) error {
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
 	return &ReconcileService{
-		ReconcilerBase: util.NewReconcilerBase(mgr.GetClient(), mgr.GetScheme()),
+		ReconcilerBase: util.NewReconcilerBase(mgr.GetClient(), mgr.GetScheme(), mgr.GetConfig(), mgr.GetRecorder(controllerName)),
 	}
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
 func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	// Create a new controller
-	c, err := controller.New("service-controller", mgr, controller.Options{Reconciler: r})
+	c, err := controller.New(controllerName, mgr, controller.Options{Reconciler: r})
 	if err != nil {
 		return err
 	}
@@ -138,13 +141,13 @@ func (r *ReconcileService) Reconcile(request reconcile.Request) (reconcile.Resul
 		err = r.CreateOrUpdateResource(instance, instance.GetNamespace(), networkPolicy)
 		if err != nil {
 			log.Error(err, "unable to create NetworkPolicy", "NetworkPolicy", networkPolicy)
-			return reconcile.Result{}, err
+			return r.manageError(err, instance)
 		}
 	} else {
 		err = r.DeleteResource(networkPolicy)
 		if err != nil {
 			log.Error(err, "unable to delete NetworkPolicy", "NetworkPolicy", networkPolicy)
-			return reconcile.Result{}, err
+			return r.manageError(err, instance)
 		}
 	}
 
@@ -273,4 +276,12 @@ func getLabelSelectorFromAnnotation(labels string) *metav1.LabelSelector {
 	return &metav1.LabelSelector{
 		MatchLabels: labelMap,
 	}
+}
+
+func (r *ReconcileService) manageError(issue error, instance runtime.Object) (reconcile.Result, error) {
+	r.GetRecorder().Event(instance, "Warning", "ProcessingError", issue.Error())
+	return reconcile.Result{
+		RequeueAfter: time.Minute * 2,
+		Requeue:      true,
+	}, nil
 }
