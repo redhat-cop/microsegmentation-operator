@@ -3,8 +3,11 @@
 [![Build Status](https://travis-ci.org/redhat-cop/microsegmentation-operator.svg?branch=master)](https://travis-ci.org/redhat-cop/microsegmentation-operator) [![Docker Repository on Quay](https://quay.io/repository/redhat-cop/microsegmentation-operator/status "Docker Repository on Quay")](https://quay.io/repository/redhat-cop/microsegmentation-operator)
 
 The microsegmentation operator allows to create [NetworkPolicies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) rules starting from [Services](https://kubernetes.io/docs/concepts/services-networking/service/).
-This feature is activated by this annotation: `microsegmentation-operator.redhat-cop.io/microsegmentation: "true"`
+
+This feature is activated by this annotation: `microsegmentation-operator.redhat-cop.io/microsegmentation: "true"`.
+
 By default the generated NetworkPolicy will allow traffic from pods in the same namespace and to the ports described in the service.
+
 The NetworkPolicy object can be tweaked with the following additional annotations:
 
 | Annotation  | Description  |
