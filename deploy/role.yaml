@@ -6,11 +6,12 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - events
   - services
   verbs:
   - "*" 
 - apiGroups:
-  - "networking"
+  - "networking.k8s.io"
   resources:
   - networkpolicies
   verbs:
@@ -59,7 +60,7 @@ rules:
   resources:
   - deployments/finalizers
   resourceNames:
-  - cert-utils-operator
+  - microsegmentation-operator
   verbs:
   - "update"
 
