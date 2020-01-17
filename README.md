@@ -193,14 +193,29 @@ oc apply -f deploy
 
 Execute the following steps to develop the functionality locally. It is recommended that development be done using a cluster with `cluster-admin` permissions.
 
-Clone the repository, then resolve all dependencies using `dep`:
+```shell
+go mod download
+```
+
+optionally:
 
 ```shell
-dep ensure
+go mod vendor
 ```
 
 Using the [operator-sdk](https://github.com/operator-framework/operator-sdk), run the operator locally:
 
 ```shell
-operator-sdk up local --namespace ""
+OPERATOR_NAME='microsegmentation-operator' operator-sdk --verbose up local --namespace ""
 ```
+
+## Release Process
+
+To release execute the following:
+
+```shell
+git tag -a "<version>" -m "release <version>"
+git push upstream <version>
+```
+
+use this version format: vM.m.z
